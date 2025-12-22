@@ -8,7 +8,7 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// 🔥 CONFIG FIREBASE (SEUS DADOS AQUI)
+/* 🔥 CONFIG FIREBASE */
 const firebaseConfig = {
   apiKey: "AIzaSyDSIKV7r2Pjf6kul0HvK4NpXHpt8xBAy_k",
   authDomain: "confessabj.firebaseapp.com",
@@ -20,39 +20,50 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// LOGIN
+/* 👉 LOGIN */
 const loginBtn = document.getElementById("loginBtn");
 if (loginBtn) {
-  loginBtn.onclick = () => {
+  loginBtn.addEventListener("click", () => {
+    sessionStorage.setItem("loginTentativa", "1");
     signInWithRedirect(auth, provider);
-  };
+  });
 }
 
-// RESULTADO DO REDIRECT
-getRedirectResult(auth).catch(() => {});
+/* 👉 RESULTADO DO LOGIN */
+getRedirectResult(auth)
+  .then((result) => {
+    if (result && result.user) {
+      sessionStorage.setItem("logado", "1");
+      window.location.href = "forum.html";
+    }
+  })
+  .catch(() => {});
 
-// PROTEÇÃO + REDIRECIONAMENTO
+/* 👉 PROTEÇÃO DE PÁGINA */
 onAuthStateChanged(auth, (user) => {
   const path = window.location.pathname;
 
-  const isForum = path.endsWith("forum.html");
-  const isHome = path.endsWith("/") || path.endsWith("index.html");
-
-  if (user && isHome) {
-    window.location.href = "forum.html";
+  if (user) {
+    sessionStorage.setItem("logado", "1");
   }
 
-  if (!user && isForum) {
+  if (!user && path.endsWith("forum.html")) {
     window.location.href = "index.html";
   }
 
-  if (user) {
+  if (user && path.endsWith("forum.html")) {
     const el = document.getElementById("user");
     if (el) el.innerText = "Logado como: " + user.displayName;
   }
 });
-// LOGOUT
+
+/* 👉 LOGOUT */
 const logoutBtn = document.getElementById("logout");
 if (logoutBtn) {
-  logoutBtn.onclick = () => signOut(auth);
+  logoutBtn.onclick = () => {
+    sessionStorage.clear();
+    signOut(auth).then(() => {
+      window.location.href = "index.html";
+    });
+  };
 }
