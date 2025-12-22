@@ -6,22 +6,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
-      background: #0b0b0b;
-      color: #fff;
-      font-family: Arial;
-      padding: 20px;
+      background:#0b0b0b;
+      color:white;
+      font-family:Arial;
+      padding:20px;
     }
   </style>
 </head>
 <body>
 
-<h1>Bem-vindo ao ConfessaBJ</h1>
-<p id="user"></p>
-
+<h1>ConfessaBJ</h1>
 <p id="user"></p>
 <button id="logout">Sair</button>
-<script type="module" src="./auth.js"></script>
 
-<script type="module" src="./auth.js"></script>
+<script type="module">
+  import { observarAuth, logoutGoogle } from "./firebase.js";
+
+  observarAuth(user => {
+    if (!user) {
+      window.location.href = "index.html";
+    } else {
+      document.getElementById("user").innerText =
+        "Logado como: " + user.displayName;
+    }
+  });
+
+  document.getElementById("logout").onclick = () => {
+    logoutGoogle().then(() => {
+      window.location.href = "index.html";
+    });
+  };
+</script>
+
 </body>
 </html>
