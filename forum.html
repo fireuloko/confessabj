@@ -16,9 +16,18 @@
 <body>
 
 <h1>ConfessaBJ</h1>
-<p id="user"></p>
-<button id="logout">Sair</button>
 
+<section id="novo-post">
+  <textarea id="texto" placeholder="Confessa aí..."></textarea>
+  <br>
+  <button id="postar">Postar</button>
+</section>
+
+<hr>
+
+<section id="feed"></section>
+
+<script type="module" src="./assets/js/forum.js"></script>
 <script type="module">
 let jaRedirecionou = false;
 
