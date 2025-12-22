@@ -104,6 +104,15 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 800);
     }
   });
+document.getElementById("loginBtn").addEventListener("click", () => {
+  signInWithPopup(auth, provider)
+    .then(() => {
+      console.log("Login OK");
+    })
+    .catch(err => {
+      alert("Erro: " + err.message);
+      console.error(err);
+    });
 });
 </script>
 
@@ -114,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
   <h1>ConfessaBJ</h1>
   <p style="text-align:center">Entre para acessar</p>
 
-  <button id="loginBtn">🔐 Entrar com Google</button>
+<button id="loginBtn">Entrar com Google</button>
 
   <div style="margin-top:15px;text-align:center;font-size:12px;color:#aaa">
     Ao entrar, você concorda com os<br>
