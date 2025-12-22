@@ -1,34 +1,100 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>ConfessaBJ</title>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="UTF-8">
+<title>ConfessaBJ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #111, #000);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 420px;
+  width: 100%;
+  padding: 30px;
+  background: rgba(20,20,20,0.9);
+  border-radius: 15px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.8);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #aaa;
+  margin-bottom: 25px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #1f6feb;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #388bfd;
+}
+
+.info {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.info p {
+  margin: 6px 0;
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.footer a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+</style>
 </head>
+
 <body>
+<div class="container">
+  <h1>ConfessaBJ</h1>
+  <p class="subtitle">Confissões, histórias e fofocas urbanas</p>
 
-  <div class="container">
-    <h1>ConfessaBJ</h1>
-    <p class="subtitle">
-      Um espaço fechado para confissões, histórias e fofocas urbanas.
-    </p>
+  <button onclick="alert('Login com Google será ativado em breve')">
+    🔐 Entrar com Google
+  </button>
 
-    <div class="actions">
-      <a href="pages/login.html" class="btn">Entrar com Google</a>
-    </div>
-
-    <div class="info">
-      <p>🔒 Acesso restrito</p>
-      <p>🧠 Apelido fixo</p>
-      <p>🚫 Regras rígidas</p>
-    </div>
-
-    <footer>
-      <a href="pages/termos.html">Termos de Uso</a> •
-      <a href="pages/regras.html">Regras</a> •
-      <a href="pages/privacidade.html">Privacidade</a>
-    </footer>
+  <div class="info">
+    <p>🔒 Acesso restrito</p>
+    <p>👤 Apelido fixo</p>
+    <p>🚫 Regras rígidas</p>
   </div>
 
+  <div class="footer">
+    <a href="termos.html">Termos de Uso</a> •
+    <a href="privacidade.html">Privacidade</a>
+  </div>
+</div>
 </body>
 </html>
