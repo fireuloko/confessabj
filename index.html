@@ -1,24 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>ConfessaBJ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConfessaBJ</title>
 
 <style>
 body {
   background: #0f0f0f;
   color: white;
   font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
 }
 
 .container {
+  width: 100%;
   max-width: 420px;
-  margin: 80px auto;
   padding: 30px;
   background: rgba(20,20,20,0.95);
   border-radius: 15px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+  box-shadow: 0 0 30px rgba(0,0,0,.6);
 }
 
 h1 {
@@ -27,26 +32,48 @@ h1 {
 
 button {
   width: 100%;
-  padding: 14px;
+  padding: 15px;
   margin-top: 15px;
   border: none;
   border-radius: 10px;
-  background: #1a73e8;
+  background: #1f6feb;
   color: white;
   font-size: 16px;
   cursor: pointer;
 }
 
-.user {
-  text-align: center;
-  margin-top: 20px;
+button:active {
+  opacity: 0.8;
 }
 
-a {
-  color: #aaa;
+.terms {
+  margin-top: 15px;
   font-size: 12px;
+  color: #aaa;
+  text-align: center;
+}
+
+.terms a {
+  color: #1f6feb;
+  text-decoration: none;
 }
 </style>
+
+</head>
+<body>
+
+<div class="container">
+  <h1>ConfessaBJ</h1>
+  <p style="text-align:center">Entre para confessar anonimamente</p>
+
+  <button id="loginBtn">Entrar com Google</button>
+
+  <div class="terms">
+    Ao entrar, você concorda com os<br>
+    <a href="termos.html">Termos de Uso</a> ·
+    <a href="privacidade.html">Privacidade</a>
+  </div>
+</div>
 
 <!-- FIREBASE -->
 <script type="module">
@@ -55,13 +82,11 @@ import {
   getAuth, 
   GoogleAuthProvider, 
   signInWithRedirect,
-  getRedirectResult,
-  signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDSIKV7r2Pj6kul0HVk4NpXHpt8xBAy_k",
+  apiKey: "AIzaSyDSIKV7r2Pj6kul0HvK4NpXHpt8xBAy_k",
   authDomain: "confessabj.firebaseapp.com",
   projectId: "confessabj",
   appId: "1:607149504816:web:1d4c0928159e1110d1b0f5"
@@ -70,68 +95,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-import { setPersistence, browserLocalPersistence
- } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-setPersistence(auth, browserLocalPersistence);
-document.addEventListener("DOMContentLoaded", () => {
-  const loginBtn = document.getElementById("loginBtn");
-  const userDiv = document.getElementById("user");
-
-  loginBtn.addEventListener("click", () => {
-    signInWithRedirect(auth, provider);
-  });
-
-  getRedirectResult(auth).catch(err => {
-    console.error(err);
-  });
-
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      userDiv.innerHTML = `
-        <p>Logado como:</p>
-        <strong>${user.displayName}</strong><br>
-        <img src="${user.photoURL}" width="80" style="border-radius:50%;margin-top:10px"><br>
-        <button id="logoutBtn">Sair</button>
-      `;
-
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        signOut(auth);
-      });
-
-      setTimeout(() => {
-        window.location.href = "forum.html";
-      }, 800);
-    }
-  });
+// BOTÃO LOGIN (ANDROID SAFE)
 document.getElementById("loginBtn").addEventListener("click", () => {
-  signInWithPopup(auth, provider)
-    .then(() => {
-      console.log("Login OK");
-    })
-    .catch(err => {
-      alert("Erro: " + err.message);
-      console.error(err);
-    });
+  signInWithRedirect(auth, provider);
+});
+
+// REDIRECIONA APÓS LOGIN
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    window.location.href = "forum.html";
+  }
 });
 </script>
 
-</head>
-
-<body>
-<div class="container">
-  <h1>ConfessaBJ</h1>
-  <p style="text-align:center">Entre para acessar</p>
-
-<button id="loginBtn">Entrar com Google</button>
-
-  <div style="margin-top:15px;text-align:center;font-size:12px;color:#aaa">
-    Ao entrar, você concorda com os<br>
-    <a href="termos.html">Termos de Uso</a> · 
-    <a href="privacidade.html">Privacidade</a>
-  </div>
-
-  <div id="user" class="user"></div>
-</div>
 </body>
 </html>
