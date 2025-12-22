@@ -2,68 +2,27 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>ConfessaBJ - Fórum</title>
+<title>ConfessaBJ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-  margin: 0;
-  background: #0b0b0b;
-  color: #fff;
-  font-family: Arial, sans-serif;
-}
-
-header {
-  padding: 15px;
-  background: #111;
-  text-align: center;
-}
-
-textarea {
-  width: 100%;
-  min-height: 120px;
-  background: #111;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-button {
-  width: 100%;
-  padding: 12px;
-  background: #1f6feb;
-  border: none;
-  border-radius: 10px;
-  margin-top: 10px;
-  color: white;
-  font-size: 16px;
-}
-
-.post {
-  background: #111;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-</style>
+<link rel="stylesheet" href="assets/css/forum.css">
 </head>
 
 <body>
 
 <header>
   <h2>🔥 ConfessaBJ</h2>
-  <p>Fofocas, confissões e histórias</p>
+  <p>Confissões e fofocas anônimas</p>
 </header>
 
-<div style="padding:15px">
-  <textarea placeholder="Escreva sua confissão..."></textarea>
-  <button>Postar anonimamente</button>
+<div class="container">
 
-  <h3 style="margin-top:20px">🧵 Últimas confissões</h3>
+  <textarea id="confessionText" placeholder="Escreva sua confissão..."></textarea>
+  <button id="postBtn">Postar</button>
 
-  <div class="post">Exemplo de confissão anônima 😈</div>
+  <div id="feed"></div>
+
 </div>
 
+<script type="module" src="assets/js/forum.js"></script>
 </body>
 </html>
