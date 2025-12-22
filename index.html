@@ -1,49 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>ConfessaBJ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background:#0b0b0b;
-      color:white;
-      height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      margin:0;
-      font-family:Arial;
-    }
-    button {
-      padding:16px 28px;
-      font-size:16px;
-      background:#8b0000;
-      color:white;
-      border:none;
-      border-radius:8px;
-    }
-  </style>
+  <title>ConfessaBJ - Login</title>
 </head>
 <body>
 
-<button id="login">Entrar com Google</button>
+  <h1>ConfessaBJ</h1>
+  <button id="login">Entrar com Google</button>
 
-<script type="module">
-  import { loginGoogle, observarAuth } from "./firebase.js";
+  <script type="module">
+    import { auth, provider } from "./firebase.js";
+    import { signInWithPopup, onAuthStateChanged } from
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  document.getElementById("login").onclick = () => {
-    loginGoogle().catch(err => {
-      alert(err.message);
+    const btn = document.getElementById("login");
+
+    btn.onclick = async () => {
+      await signInWithPopup(auth, provider);
+    };
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        window.location.href = "forum.html";
+      }
     });
-  };
-
-  observarAuth(user => {
-    if (user) {
-window.location.href = "/confessabj/forum.html";
-    }
-  });
-</script>
+  </script>
 
 </body>
 </html>

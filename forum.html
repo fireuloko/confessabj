@@ -1,53 +1,21 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>ConfessaBJ — Fórum</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background:#0b0b0b;
-      color:white;
-      font-family:Arial;
-      padding:20px;
-    }
-  </style>
+  <title>ConfessaBJ - Fórum</title>
 </head>
 <body>
 
-<h1>ConfessaBJ</h1>
+  <h2>Fórum</h2>
 
-<section id="novo-post">
-  <textarea id="texto" placeholder="Confessa aí..."></textarea>
+  <textarea id="texto" placeholder="Digite sua confissão"></textarea>
   <br>
   <button id="postar">Postar</button>
-</section>
 
-<hr>
+  <hr>
 
-<section id="feed"></section>
+  <div id="feed"></div>
 
-<script type="module" src="./assets/js/forum.js"></script>
-<script type="module">
-let jaRedirecionou = false;
-
-observarAuth(user => {
-  if (!user && !jaRedirecionou) {
-    jaRedirecionou = true;
-    window.location.href = "/confessabj/";
-  }
-
-  if (user) {
-    document.getElementById("user").innerText =
-      "Logado como: " + user.displayName;
-  }
-});
-  document.getElementById("logout").onclick = () => {
-    logoutGoogle().then(() => {
-window.location.href = "/confessabj/";
-    });
-  };
-</script>
-
+  <script type="module" src="./assets/js/forum.js"></script>
 </body>
 </html>

@@ -1,54 +1,50 @@
-import { auth } from "../../firebase.js";
+import { auth, db } from "../../firebase.js";
 import {
-  getFirestore,
   collection,
   addDoc,
+  onSnapshot,
   query,
   orderBy,
-  onSnapshot,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const db = getFirestore();
+import {
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ELEMENTOS
 const feed = document.getElementById("feed");
-const postarBtn = document.getElementById("postar");
+const postar = document.getElementById("postar");
 
-// POSTAR CONFISSÃO
-postarBtn.onclick = async () => {
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "index.html";
+  }
+});
+
+postar.onclick = async () => {
   const texto = document.getElementById("texto").value.trim();
   if (!texto) return;
 
   await addDoc(collection(db, "posts"), {
-    uid: auth.currentUser.uid,
-    apelido: auth.currentUser.displayName,
-    texto: texto,
-    likes: 0,
-    createdAt: serverTimestamp()
+    texto,
+    autor: auth.currentUser.displayName,
+    criadoEm: serverTimestamp()
   });
 
   document.getElementById("texto").value = "";
 };
 
-// CARREGAR FEED
 const q = query(
   collection(db, "posts"),
-  orderBy("createdAt", "desc")
+  orderBy("criadoEm", "desc")
 );
 
 onSnapshot(q, snapshot => {
   feed.innerHTML = "";
-
   snapshot.forEach(doc => {
-    const post = doc.data();
-
+    const p = doc.data();
     feed.innerHTML += `
-      <div class="post">
-        <strong>${post.apelido}</strong>
-        <p>${post.texto}</p>
-        <small>❤️ ${post.likes}</small>
-      </div>
+      <p><strong>${p.autor}</strong>: ${p.texto}</p>
       <hr>
     `;
   });
