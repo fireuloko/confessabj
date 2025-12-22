@@ -7,21 +7,21 @@
   <style>
     body {
       background:#0b0b0b;
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      color:white;
       height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
       margin:0;
       font-family:Arial;
     }
     button {
-      padding:15px 30px;
-      border:none;
-      border-radius:8px;
+      padding:16px 28px;
+      font-size:16px;
       background:#8b0000;
       color:white;
-      font-size:16px;
+      border:none;
+      border-radius:8px;
     }
   </style>
 </head>
@@ -32,7 +32,11 @@
 <script type="module">
   import { loginGoogle, observarAuth } from "./firebase.js";
 
-  document.getElementById("login").onclick = loginGoogle;
+  document.getElementById("login").onclick = () => {
+    loginGoogle().catch(err => {
+      alert(err.message);
+    });
+  };
 
   observarAuth(user => {
     if (user) {

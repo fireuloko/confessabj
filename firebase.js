@@ -2,13 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* CONFIG FIREBASE — COPIA DO CONSOLE */
+/* 🔥 CONFIG DO FIREBASE (EXATA DO CONSOLE) */
 const firebaseConfig = {
   apiKey: "AIzaSyDSIKV7r2Pjf6kul0HvK4NpXHpt8xBAy_k",
   authDomain: "confessabj.firebaseapp.com",
@@ -18,11 +17,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const provider = new GoogleAuthProvider();
 
-/* LOGIN */
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+
+/* LOGIN POPUP */
 export function loginGoogle() {
-  signInWithRedirect(auth, provider);
+  return signInWithPopup(auth, provider);
 }
 
 /* LOGOUT */
@@ -30,10 +31,7 @@ export function logoutGoogle() {
   return signOut(auth);
 }
 
-/* REDIRECT RESULT — ISSO É CRÍTICO */
-getRedirectResult(auth).catch(() => {});
-
-/* ESTADO DE LOGIN */
-export function observarAuth(callback) {
-  onAuthStateChanged(auth, callback);
+/* OBSERVADOR */
+export function observarAuth(cb) {
+  onAuthStateChanged(auth, cb);
 }
