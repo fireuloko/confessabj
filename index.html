@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+k<!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
@@ -23,78 +23,70 @@ body {
   padding: 30px;
   background: rgba(20,20,20,0.9);
   border-radius: 15px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.8);
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-
-.subtitle {
-  text-align: center;
-  color: #aaa;
-  margin-bottom: 25px;
 }
 
 button {
   width: 100%;
   padding: 14px;
-  margin-top: 10px;
+  margin-top: 15px;
   border: none;
   border-radius: 10px;
   background: #1f6feb;
   color: white;
   font-size: 16px;
-  cursor: pointer;
 }
 
-button:hover {
-  background: #388bfd;
-}
-
-.info {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #bbb;
-}
-
-.info p {
-  margin: 6px 0;
-}
-
-.footer {
-  margin-top: 20px;
+.user {
   text-align: center;
-  font-size: 13px;
-}
-
-.footer a {
-  color: #58a6ff;
-  text-decoration: none;
+  margin-top: 20px;
 }
 </style>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSIKV7r2Pjf6kul0HvK4NpXHpt8xBAy_k",
+  authDomain: "confessabj.firebaseapp.com",
+  projectId: "confessabj",
+  appId: "1:607149504816:web:1d4c0928159e1110d1b0f5"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+window.login = () => {
+  signInWithPopup(auth, provider);
+};
+
+window.logout = () => {
+  signOut(auth);
+};
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    document.getElementById("user").innerHTML = `
+      <p>Logado como:</p>
+      <strong>${user.displayName}</strong><br>
+      <img src="${user.photoURL}" width="80" style="border-radius:50%">
+      <button onclick="logout()">Sair</button>
+    `;
+  }
+});
+</script>
 </head>
 
 <body>
 <div class="container">
   <h1>ConfessaBJ</h1>
-  <p class="subtitle">Confissões, histórias e fofocas urbanas</p>
+  <p>Entre para acessar</p>
 
-  <button onclick="alert('Login com Google será ativado em breve')">
-    🔐 Entrar com Google
-  </button>
+  <button onclick="login()">🔐 Entrar com Google</button>
 
-  <div class="info">
-    <p>🔒 Acesso restrito</p>
-    <p>👤 Apelido fixo</p>
-    <p>🚫 Regras rígidas</p>
-  </div>
-
-  <div class="footer">
-    <a href="termos.html">Termos de Uso</a> •
-    <a href="privacidade.html">Privacidade</a>
-  </div>
+  <div id="user" class="user"></div>
 </div>
 </body>
 </html>
