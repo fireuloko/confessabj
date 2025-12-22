@@ -1,28 +1,60 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>ConfessaBJ</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="assets/css/forum.css">
-</head>
+<title>ConfessaBJ — Fórum</title>
 
+<style>
+body {
+  background: #0f0f0f;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+</style>
+</head>
 <body>
 
-<header>
-  <h2>🔥 ConfessaBJ</h2>
-  <p>Confissões e fofocas anônimas</p>
-</header>
+<h1>🔥 ConfessaBJ</h1>
+<p>Bem-vindo ao fórum.</p>
+<p id="userInfo"></p>
 
-<div class="container">
+<button id="logoutBtn">Sair</button>
 
-  <textarea id="confessionText" placeholder="Escreva sua confissão..."></textarea>
-  <button id="postBtn">Postar</button>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  <div id="feed"></div>
+const firebaseConfig = {
+  apiKey: "AIzaSyDSIKV7r2Pjf6kul0HvK4NpXHpt8xBAy_k",
+  authDomain: "confessabj.firebaseapp.com",
+  projectId: "confessabj",
+  appId: "1:607149504816:web:1d4c0928159e1110d1b0f5"
+};
 
-</div>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-<script type="module" src="assets/js/forum.js"></script>
+// 🔐 PROTEÇÃO DO FÓRUM
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    // NÃO está logado → volta pro login
+    window.location.href = "index.html";
+  } else {
+    document.getElementById("userInfo").innerText =
+      "Logado como: " + user.displayName;
+  }
+});
+
+// LOGOUT
+document.getElementById("logoutBtn").onclick = () => {
+  signOut(auth).then(() => {
+    window.location.href = "index.html";
+  });
+};
+</script>
+
 </body>
 </html>
