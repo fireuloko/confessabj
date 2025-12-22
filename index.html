@@ -78,12 +78,14 @@ button:active {
 <!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
+import {
   getAuth,
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult,
-  onAuthStateChanged
+  onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -97,25 +99,27 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// 🔐 ISSO É O QUE FALTAVA DESDE O COMEÇO
+await setPersistence(auth, browserLocalPersistence);
+
 // BOTÃO LOGIN
 document.getElementById("loginBtn").addEventListener("click", () => {
   signInWithRedirect(auth, provider);
 });
 
-// 🔑 TRATA O RETORNO DO GOOGLE
+// TRATA RETORNO DO GOOGLE
 getRedirectResult(auth).then((result) => {
   if (result && result.user) {
-    window.location.href = "forum.html";
+    window.location.replace("forum.html");
   }
 }).catch(() => {});
 
-// 🔄 GARANTIA EXTRA
+// GARANTIA EXTRA (SE JÁ ESTIVER LOGADO)
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    window.location.href = "forum.html";
+    window.location.replace("forum.html");
   }
 });
-</script>
 </script>
 
 </body>
