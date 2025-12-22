@@ -1,80 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ConfessaBJ — Fórum</title>
-
-<style>
-body {
-  background: #0f0f0f;
-  color: white;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-}
-button {
-  padding: 10px;
-  margin-top: 10px;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>ConfessaBJ — Fórum</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #fff;
+      font-family: Arial;
+      padding: 20px;
+    }
+  </style>
 </head>
-
 <body>
 
-<h1>🔥 ConfessaBJ</h1>
+<h1>Bem-vindo ao ConfessaBJ</h1>
+<p id="user"></p>
 
-<!-- 🔹 AQUI MOSTRA O USUÁRIO -->
-<p id="userInfo"></p>
+<button id="logout">Sair</button>
 
-<!-- 🔹 BOTÃO DE SAIR -->
-<button id="logoutBtn">Sair</button>
-
-<hr>
-
-<p>Aqui vai o fórum depois.</p>
-
-<!-- 🔥 SCRIPT SEMPRE NO FINAL -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-  setPersistence,
-  browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDSIKV7r2Pjf6kul0HvK4NpXHpt8xBAy_k",
-  authDomain: "confessabj.firebaseapp.com",
-  projectId: "confessabj",
-  appId: "1:607149504816:web:1d4c0928159e1110d1b0f5"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-// 🔐 GARANTE SESSÃO
-setPersistence(auth, browserLocalPersistence);
-
-// 🔎 VERIFICA LOGIN
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.replace("index.html");
-  } else {
-    document.getElementById("userInfo").innerText =
-      "Logado como: " + user.displayName;
-  }
-});
-
-// 🚪 LOGOUT
-document.getElementById("logoutBtn").onclick = () => {
-  signOut(auth).then(() => {
-    window.location.replace("index.html");
-  });
-};
-</script>
-
+<script type="module" src="./auth.js"></script>
 </body>
 </html>

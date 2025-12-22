@@ -1,115 +1,34 @@
-<!DOCTYPE html>
+k<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ConfessaBJ</title>
-
-<style>
-body {
-  background: #0f0f0f;
-  color: white;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 500px;
-  margin: 60px auto;
-  padding: 25px;
-  background: #141414;
-  border-radius: 15px;
-}
-
-button {
-  width: 100%;
-  padding: 15px;
-  margin-top: 15px;
-  border: none;
-  border-radius: 10px;
-  background: #1f6feb;
-  color: white;
-  font-size: 16px;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>ConfessaBJ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background: #0b0b0b;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    button {
+      padding: 15px 25px;
+      font-size: 16px;
+      background: #8b0000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- 🔐 LOGIN -->
-<div id="loginView" class="container">
-  <h1>ConfessaBJ</h1>
-  <p>Entre para confessar anonimamente</p>
-  <button id="loginBtn">Entrar com Google</button>
-</div>
+<button id="loginBtn">Entrar com Google</button>
 
-<!-- 🔥 FÓRUM -->
-<div id="forumView" class="container" style="display:none">
-  <h2>🔥 Fórum</h2>
-  <p id="userInfo"></p>
-  <button id="logoutBtn">Sair</button>
-  <hr>
-  <p>Aqui vai o feed depois.</p>
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
-  onAuthStateChanged,
-  signOut,
-  setPersistence,
-  browserLocalPersistence
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDSIKV7r2Pjf6kul0HvK4NpXHpt8xBAy_k",
-  authDomain: "confessabj.firebaseapp.com",
-  projectId: "confessabj",
-  appId: "1:607149504816:web:1d4c0928159e1110d1b0f5"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-// 🔐 FIX DEFINITIVO
-await setPersistence(auth, browserLocalPersistence);
-
-// ELEMENTOS
-const loginView = document.getElementById("loginView");
-const forumView = document.getElementById("forumView");
-const userInfo = document.getElementById("userInfo");
-
-// LOGIN
-document.getElementById("loginBtn").onclick = () => {
-  signInWithRedirect(auth, provider);
-};
-
-// LOGOUT
-document.getElementById("logoutBtn").onclick = () => {
-  signOut(auth);
-};
-
-// TRATA RETORNO
-getRedirectResult(auth).catch(() => {});
-
-// CONTROLE DE TELA
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    loginView.style.display = "none";
-    forumView.style.display = "block";
-    userInfo.innerText = "Logado como: " + user.displayName;
-  } else {
-    forumView.style.display = "none";
-    loginView.style.display = "block";
-  }
-});
-</script>
-
+<script type="module" src="./auth.js"></script>
 </body>
 </html>
