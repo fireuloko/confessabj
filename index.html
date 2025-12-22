@@ -68,6 +68,8 @@ window.logout = () => {
 
 onAuthStateChanged(auth, user => {
   if (user) {
+  window.location.href = "forum.html";
+}
     document.getElementById("user").innerHTML = `
       <p>Logado como:</p>
       <strong>${user.displayName}</strong><br>
