@@ -10,24 +10,16 @@ body {
   background: #0f0f0f;
   color: white;
   font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   margin: 0;
+  padding: 0;
 }
 
 .container {
-  width: 100%;
-  max-width: 420px;
-  padding: 30px;
-  background: rgba(20,20,20,0.95);
+  max-width: 500px;
+  margin: 60px auto;
+  padding: 25px;
+  background: #141414;
   border-radius: 15px;
-  box-shadow: 0 0 30px rgba(0,0,0,.6);
-}
-
-h1 {
-  text-align: center;
 }
 
 button {
@@ -39,43 +31,28 @@ button {
   background: #1f6feb;
   color: white;
   font-size: 16px;
-  cursor: pointer;
-}
-
-button:active {
-  opacity: 0.8;
-}
-
-.terms {
-  margin-top: 15px;
-  font-size: 12px;
-  color: #aaa;
-  text-align: center;
-}
-
-.terms a {
-  color: #1f6feb;
-  text-decoration: none;
 }
 </style>
-
 </head>
+
 <body>
 
-<div class="container">
+<!-- 🔐 LOGIN -->
+<div id="loginView" class="container">
   <h1>ConfessaBJ</h1>
-  <p style="text-align:center">Entre para confessar anonimamente</p>
-
+  <p>Entre para confessar anonimamente</p>
   <button id="loginBtn">Entrar com Google</button>
-
-  <div class="terms">
-    Ao entrar, você concorda com os<br>
-    <a href="termos.html">Termos de Uso</a> ·
-    <a href="privacidade.html">Privacidade</a>
-  </div>
 </div>
 
-<!-- FIREBASE -->
+<!-- 🔥 FÓRUM -->
+<div id="forumView" class="container" style="display:none">
+  <h2>🔥 Fórum</h2>
+  <p id="userInfo"></p>
+  <button id="logoutBtn">Sair</button>
+  <hr>
+  <p>Aqui vai o feed depois.</p>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
@@ -84,6 +61,7 @@ import {
   signInWithRedirect,
   getRedirectResult,
   onAuthStateChanged,
+  signOut,
   setPersistence,
   browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -99,25 +77,36 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// 🔐 ISSO É O QUE FALTAVA DESDE O COMEÇO
+// 🔐 FIX DEFINITIVO
 await setPersistence(auth, browserLocalPersistence);
 
-// BOTÃO LOGIN
-document.getElementById("loginBtn").addEventListener("click", () => {
+// ELEMENTOS
+const loginView = document.getElementById("loginView");
+const forumView = document.getElementById("forumView");
+const userInfo = document.getElementById("userInfo");
+
+// LOGIN
+document.getElementById("loginBtn").onclick = () => {
   signInWithRedirect(auth, provider);
-});
+};
 
-// TRATA RETORNO DO GOOGLE
-getRedirectResult(auth).then((result) => {
-  if (result && result.user) {
-    window.location.replace("forum.html");
-  }
-}).catch(() => {});
+// LOGOUT
+document.getElementById("logoutBtn").onclick = () => {
+  signOut(auth);
+};
 
-// GARANTIA EXTRA (SE JÁ ESTIVER LOGADO)
+// TRATA RETORNO
+getRedirectResult(auth).catch(() => {});
+
+// CONTROLE DE TELA
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    window.location.replace("forum.html");
+    loginView.style.display = "none";
+    forumView.style.display = "block";
+    userInfo.innerText = "Logado como: " + user.displayName;
+  } else {
+    forumView.style.display = "none";
+    loginView.style.display = "block";
   }
 });
 </script>
