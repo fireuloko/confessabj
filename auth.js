@@ -33,14 +33,17 @@ getRedirectResult(auth).catch(() => {});
 
 // PROTEÇÃO + REDIRECIONAMENTO
 onAuthStateChanged(auth, (user) => {
-  const page = location.pathname;
+  const path = window.location.pathname;
 
-  if (user && page.includes("index.html")) {
-    location.href = "forum.html";
+  const isForum = path.endsWith("forum.html");
+  const isHome = path.endsWith("/") || path.endsWith("index.html");
+
+  if (user && isHome) {
+    window.location.href = "forum.html";
   }
 
-  if (!user && page.includes("forum.html")) {
-    location.href = "index.html";
+  if (!user && isForum) {
+    window.location.href = "index.html";
   }
 
   if (user) {
@@ -48,7 +51,6 @@ onAuthStateChanged(auth, (user) => {
     if (el) el.innerText = "Logado como: " + user.displayName;
   }
 });
-
 // LOGOUT
 const logoutBtn = document.getElementById("logout");
 if (logoutBtn) {
