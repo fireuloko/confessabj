@@ -1,56 +1,76 @@
-kimport { auth, db } from "../../firebase.js";
+import { auth, db } from "./firebase.js";
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import {
-  collection,
-  addDoc,
-  query,
-  orderBy,
-  onSnapshot,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const feed = document.getElementById("feed");
-const btnPostar = document.getElementById("btnPostar");
-const texto = document.getElementById("texto");
-
+/* =========================
+   🔐 PROTEÇÃO DE LOGIN
+   ========================= */
 onAuthStateChanged(auth, user => {
   if (!user) {
-    window.location.replace("index.html");
+    window.location.href = "index.html";
   }
 });
 
-// postar
-btnPostar.onclick = async () => {
-  if (!texto.value.trim()) return;
+/* =========================
+   📝 POSTAR
+   ========================= */
+const postarBtn = document.getElementById("postar");
+const textoInput = document.getElementById("texto");
+
+postarBtn.onclick = async () => {
+  const texto = textoInput.value.trim();
+  if (!texto) return alert("Escreve algo");
 
   await addDoc(collection(db, "posts"), {
-    texto: texto.value,
-    autor: auth.currentUser.displayName,
-    foto: auth.currentUser.photoURL,
+    texto: texto,
     uid: auth.currentUser.uid,
-    criadoEm: serverTimestamp(),
+    nome: auth.currentUser.displayName,
+    foto: auth.currentUser.photoURL,
+    criadoEm: Date.now(),
     likes: 0
   });
 
-  texto.value = "";
+  textoInput.value = "";
 };
 
-// feed
-const q = query(collection(db, "posts"), orderBy("criadoEm", "desc"));
+/* =========================
+   📡 FEED
+   ========================= */
+const feed = document.getElementById("posts");
+
+const q = query(
+  collection(db, "posts"),
+  orderBy("criadoEm", "desc")
+);
+
 onSnapshot(q, snapshot => {
   feed.innerHTML = "";
   snapshot.forEach(doc => {
     const p = doc.data();
     feed.innerHTML += `
       <div class="post">
-        <img src="${p.foto}">
-        <strong>${p.autor}</strong>
+        <img src="${p.foto}" width="40">
+        <strong>${p.nome}</strong>
         <p>${p.texto}</p>
+        <small>❤️ ${p.likes}</small>
       </div>
     `;
   });
 });
+
+/* =========================
+   🚪 SAIR
+   ========================= */
+document.getElementById("sair").onclick = async () => {
+  await signOut(auth);
+  window.location.href = "index.html";
+};
