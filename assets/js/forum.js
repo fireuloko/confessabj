@@ -1,4 +1,10 @@
 import { auth, db } from "../../firebase.js";
+
+import {
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 import {
   collection,
   addDoc,
@@ -8,32 +14,47 @@ import {
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+// ELEMENTOS
 const feed = document.getElementById("feed");
-const postar = document.getElementById("postar");
+const postarBtn = document.getElementById("postar");
+const textoEl = document.getElementById("texto");
+const logoutBtn = document.getElementById("logout");
 
+let usuario = null;
+
+// 🔐 VERIFICA LOGIN
 onAuthStateChanged(auth, user => {
   if (!user) {
     window.location.href = "index.html";
+  } else {
+    usuario = user;
   }
 });
 
-postar.onclick = async () => {
-  const texto = document.getElementById("texto").value.trim();
+// 🚪 LOGOUT
+logoutBtn.onclick = async () => {
+  await signOut(auth);
+  window.location.href = "index.html";
+};
+
+// ✍️ POSTAR
+postarBtn.onclick = async () => {
+  if (!usuario) return;
+
+  const texto = textoEl.value.trim();
   if (!texto) return;
 
   await addDoc(collection(db, "posts"), {
-    texto,
-    autor: auth.currentUser.displayName,
+    texto: texto,
+    autor: usuario.displayName,
+    foto: usuario.photoURL,
     criadoEm: serverTimestamp()
   });
 
-  document.getElementById("texto").value = "";
+  textoEl.value = "";
 };
 
+// 📥 FEED
 const q = query(
   collection(db, "posts"),
   orderBy("criadoEm", "desc")
@@ -44,8 +65,11 @@ onSnapshot(q, snapshot => {
   snapshot.forEach(doc => {
     const p = doc.data();
     feed.innerHTML += `
-      <p><strong>${p.autor}</strong>: ${p.texto}</p>
-      <hr>
+      <div class="post">
+        <img src="${p.foto}">
+        <strong>${p.autor}</strong>
+        <p>${p.texto}</p>
+      </div>
     `;
   });
 });

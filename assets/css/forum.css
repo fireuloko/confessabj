@@ -1,65 +1,42 @@
 body {
-  margin: 0;
   background: #0b0b0b;
-  color: #eee;
+  color: #fff;
   font-family: Arial, sans-serif;
+  margin: 0;
 }
 
 header {
+  padding: 15px;
   background: #111;
-  padding: 15px;
-  text-align: center;
-  border-bottom: 1px solid #222;
-}
-
-.container {
-  max-width: 600px;
-  margin: auto;
-  padding: 15px;
+  display: flex;
+  justify-content: space-between;
 }
 
 textarea {
   width: 100%;
-  min-height: 100px;
+  height: 80px;
   background: #111;
   color: #fff;
-  border: 1px solid #222;
-  border-radius: 10px;
+  border: none;
   padding: 10px;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background: #1f6feb;
+  background: #7a00ff;
+  color: #fff;
   border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 16px;
+  padding: 10px;
+  margin-top: 5px;
 }
 
 .post {
-  background: #111;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 15px;
-  border: 1px solid #222;
+  background: #151515;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 8px;
 }
 
-.post-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.post-header img {
-  width: 36px;
-  height: 36px;
+.post img {
+  width: 32px;
   border-radius: 50%;
-}
-
-.post-text {
-  margin-top: 10px;
-  white-space: pre-wrap;
 }

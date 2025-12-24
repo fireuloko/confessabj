@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>ConfessaBJ - Fórum</title>
+  <title>ConfessaBJ – Fórum</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/css/forum.css">
 </head>
 <body>
 
-  <h2>Fórum</h2>
+<header>
+  <h1>ConfessaBJ</h1>
+  <button id="logout">Sair</button>
+</header>
 
-  <textarea id="texto" placeholder="Digite sua confissão"></textarea>
-  <br>
+<section id="postarBox">
+  <textarea id="texto" placeholder="Conta a fofoca..."></textarea>
   <button id="postar">Postar</button>
+</section>
 
-  <hr>
+<section id="feed"></section>
 
-  <div id="feed"></div>
-
-  <script type="module" src="./assets/js/forum.js"></script>
+<script type="module" src="assets/js/forum.js"></script>
 </body>
 </html>
