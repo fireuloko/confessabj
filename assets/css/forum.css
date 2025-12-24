@@ -121,3 +121,15 @@ header button {
   margin: 0;
   line-height: 1.4;
 }
+
+.post-actions {
+  margin-top: 10px;
+}
+
+.like-btn {
+  background: transparent;
+  border: none;
+  color: #ff5fa2;
+  font-size: 14px;
+  cursor: pointer;
+}

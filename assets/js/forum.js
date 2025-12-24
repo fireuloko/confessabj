@@ -44,11 +44,12 @@ postarBtn.onclick = async () => {
   const texto = textoEl.value.trim();
   if (!texto) return;
 
-  await addDoc(collection(db, "posts"), {
-    texto: texto,
-    autor: usuario.displayName,
-    foto: usuario.photoURL,
-    criadoEm: serverTimestamp()
+await addDoc(collection(db, "posts"), {
+  autor: user.displayName,
+  foto: user.photoURL,
+  texto: texto,
+  likes: 0,
+  criadoEm: Date.now()
   });
 
   textoEl.value = "";
@@ -71,8 +72,21 @@ feed.innerHTML += `
       <img src="${p.foto}">
       <strong>${p.autor}</strong>
     </div>
+
     <p>${p.texto}</p>
+
+    <div class="post-actions">
+      <button class="like-btn" onclick="curtir('${doc.id}')">
+        ❤️ <span>${p.likes || 0}</span>
+      </button>
+    </div>
   </div>
 `;
+import { doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+window.curtir = async function(id) {
+  const ref = doc(db, "posts", id);
+  await updateDoc(ref, {
+    likes: increment(1)
   });
-});
+};
