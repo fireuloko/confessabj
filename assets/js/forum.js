@@ -65,11 +65,14 @@ onSnapshot(q, snapshot => {
   snapshot.forEach(doc => {
     const p = doc.data();
     feed.innerHTML += `
-      <div class="post">
-        <img src="${p.foto}">
-        <strong>${p.autor}</strong>
-        <p>${p.texto}</p>
-      </div>
-    `;
+feed.innerHTML += `
+  <div class="post">
+    <div class="post-header">
+      <img src="${p.foto}">
+      <strong>${p.autor}</strong>
+    </div>
+    <p>${p.texto}</p>
+  </div>
+`;
   });
 });
