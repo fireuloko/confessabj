@@ -1,5 +1,4 @@
-import { auth, db } from "../../firebase.js";
-
+kimport { auth, db } from "../../firebase.js";
 import {
   onAuthStateChanged,
   signOut
@@ -8,94 +7,50 @@ import {
 import {
   collection,
   addDoc,
-  onSnapshot,
   query,
   orderBy,
+  onSnapshot,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ELEMENTOS
 const feed = document.getElementById("feed");
-const postarBtn = document.getElementById("postar");
-const textoEl = document.getElementById("texto");
-const logoutBtn = document.getElementById("logout");
+const btnPostar = document.getElementById("btnPostar");
+const texto = document.getElementById("texto");
 
-let usuario = null;
-
-// 🔐 VERIFICA LOGIN
 onAuthStateChanged(auth, user => {
   if (!user) {
-    window.location.href = "index.html";
-  } else {
-    usuario = user;
+    window.location.replace("index.html");
   }
 });
 
-// 🚪 LOGOUT
-logoutBtn.onclick = async () => {
-  await signOut(auth);
-  window.location.href = "index.html";
-};
-
-// ✍️ POSTAR
-postarBtn.onclick = async () => {
-  if (!usuario) return;
-
-window.postar = async function() {
-  const texto = document.getElementById("texto").value;
-
-  if (!texto.trim()) {
-    alert("Digite algo");
-    return;
-  }
+// postar
+btnPostar.onclick = async () => {
+  if (!texto.value.trim()) return;
 
   await addDoc(collection(db, "posts"), {
+    texto: texto.value,
     autor: auth.currentUser.displayName,
     foto: auth.currentUser.photoURL,
-    texto: texto,
-    likes: 0,
-    criadoEm: Date.now()
+    uid: auth.currentUser.uid,
+    criadoEm: serverTimestamp(),
+    likes: 0
   });
 
-  document.getElementById("texto").value = "";
-};
-  });
-
-  textoEl.value = "";
+  texto.value = "";
 };
 
-// 📥 FEED
-const q = query(
-  collection(db, "posts"),
-  orderBy("criadoEm", "desc")
-);
-
+// feed
+const q = query(collection(db, "posts"), orderBy("criadoEm", "desc"));
 onSnapshot(q, snapshot => {
   feed.innerHTML = "";
   snapshot.forEach(doc => {
     const p = doc.data();
     feed.innerHTML += `
-feed.innerHTML += `
-  <div class="post">
-    <div class="post-header">
-      <img src="${p.foto}">
-      <strong>${p.autor}</strong>
-    </div>
-
-    <p>${p.texto}</p>
-
-    <div class="post-actions">
-      <button class="like-btn" onclick="curtir('${doc.id}')">
-        ❤️ <span>${p.likes || 0}</span>
-      </button>
-    </div>
-  </div>
-`;
-import { doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
-window.curtir = async function(id) {
-  const ref = doc(db, "posts", id);
-  await updateDoc(ref, {
-    likes: increment(1)
+      <div class="post">
+        <img src="${p.foto}">
+        <strong>${p.autor}</strong>
+        <p>${p.texto}</p>
+      </div>
+    `;
   });
-};
+});

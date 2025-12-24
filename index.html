@@ -1,40 +1,28 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>ConfessaBJ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    body {
-      background: #0d0d0d;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial, sans-serif;
-    }
-    button {
-      padding: 15px 25px;
-      font-size: 16px;
-      background: #7a00ff;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-    }
-  </style>
 </head>
 <body>
 
-<button id="loginBtn">Entrar com Google</button>
+<h1>ConfessaBJ</h1>
+<button id="login">Entrar com Google</button>
 
 <script type="module">
-  import { auth, provider } from "./firebase.js";
-  import { signInWithRedirect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { auth, provider } from "./firebase.js";
+import { signInWithPopup, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-  document.getElementById("loginBtn").onclick = () => {
-    signInWithRedirect(auth, provider);
-  };
+document.getElementById("login").onclick = async () => {
+  await signInWithPopup(auth, provider);
+};
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    window.location.replace("forum.html");
+  }
+});
 </script>
 
 </body>
