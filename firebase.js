@@ -4,7 +4,7 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebas
 
 const firebaseConfig = {
   apiKey: "AIzaSyDSIKV7r2Pjf6kul0HvK4NpXHpt8xBAy_k",
-  authDomain: "SEU_PROJECT_ID.firebaseapp.com",
+  authDomain: "confessabj.firebaseapp.com",
   projectId: "confessabj",
 };
 
