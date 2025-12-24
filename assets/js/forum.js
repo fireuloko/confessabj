@@ -41,15 +41,24 @@ logoutBtn.onclick = async () => {
 postarBtn.onclick = async () => {
   if (!usuario) return;
 
-  const texto = textoEl.value.trim();
-  if (!texto) return;
+window.postar = async function() {
+  const texto = document.getElementById("texto").value;
 
-await addDoc(collection(db, "posts"), {
-  autor: user.displayName,
-  foto: user.photoURL,
-  texto: texto,
-  likes: 0,
-  criadoEm: Date.now()
+  if (!texto.trim()) {
+    alert("Digite algo");
+    return;
+  }
+
+  await addDoc(collection(db, "posts"), {
+    autor: auth.currentUser.displayName,
+    foto: auth.currentUser.photoURL,
+    texto: texto,
+    likes: 0,
+    criadoEm: Date.now()
+  });
+
+  document.getElementById("texto").value = "";
+};
   });
 
   textoEl.value = "";
