@@ -1,4 +1,3 @@
-alert("forum.js carregou");
 import { auth, db } from "./firebase.js";
 
 import {
