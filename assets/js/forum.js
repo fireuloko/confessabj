@@ -65,10 +65,14 @@ onSnapshot(q, snapshot => {
       </button>
     `;
 
-    const btn = div.querySelector("button");
-    btn.onclick = async () => {
-      const ref = doc(db, "posts", id);
+const btn = div.querySelector(".like-btn");
 
+btn.addEventListener("click", async () => {
+  const ref = doc(db, "posts", id);
+  await updateDoc(ref, {
+    likes: increment(1)
+  });
+});
       if (!user) return;
 
       if (jaCurtiu) {

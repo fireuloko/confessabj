@@ -145,13 +145,12 @@ onSnapshot(q, (snapshot) => {
     const div = document.createElement("div");
     div.className = "post";
 
-    div.innerHTML = `
-      <p>${post.text}</p>
-      <button onclick="curtir('${id}')">
-        ❤️ ${post.likes || 0}
-      </button>
-    `;
-
+div.innerHTML = `
+  <p>${post.text}</p>
+  <button class="like-btn" data-id="${id}" type="button">
+    ❤️ <span>${post.likes || 0}</span>
+  </button>
+`;
     feed.appendChild(div);
   });
 });
