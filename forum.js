@@ -1,4 +1,12 @@
-import { auth, db } from "./firebase.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  doc, 
+  updateDoc, 
+  increment 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";import { auth, db } from "./firebase.js";
 
 import {
   collection,
@@ -68,17 +76,33 @@ onSnapshot(q, snapshot => {
   snapshot.forEach(doc => {
     const p = doc.data();
 
-    areaPosts.innerHTML += `
-      <div class="post">
-        <img src="${p.foto}" width="40">
-        <strong>${p.nome}</strong>
-        <p>${p.texto}</p>
-        <small>❤️ ${p.likes}</small>
-      </div>
-    `;
-  });
-});
+div.innerHTML = `
+  <div class="post">
+    <p>${post.text}</p>
 
+    <button class="like-btn" data-id="${id}" type="button">
+      ❤️ <span>${post.likes ?? 0}</span>
+    </button>
+  </div>
+    `;
+const likeBtn = div.querySelector(".like-btn");
+
+likeBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const postId = likeBtn.dataset.id;
+  console.log("Curtindo post:", postId);
+
+  try {
+    const ref = doc(db, "posts", postId);
+    await updateDoc(ref, {
+      likes: increment(1)
+    });
+    console.log("Like enviado com sucesso");
+  } catch (err) {
+    console.error("Erro ao curtir:", err);
+  }
+});
 /* =========================
    🚪 SAIR
    ========================= */
