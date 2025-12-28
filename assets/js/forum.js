@@ -1,3 +1,6 @@
+window.onerror = function (msg, url, line, col, error) {
+  alert("ERRO: " + msg + " (linha " + line + ")");
+};
 import { auth, db } from "./firebase.js";
 import {
   collection,
